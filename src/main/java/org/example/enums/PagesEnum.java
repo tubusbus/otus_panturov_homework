@@ -3,7 +3,7 @@ package org.example.enums;
 public enum PagesEnum {
   MAIN_PAGE("/"),
   LESSONS_PAGE("/lessons");
-  private String url;
+  private final String url;
 
   PagesEnum(String url) {
     this.url = url;

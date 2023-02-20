@@ -14,8 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class MainPageTest {
-  MainPage page;
-  WebDriver driver;
+  private MainPage page;
+  private WebDriver driver;
 
   public MainPageTest() {
     driver = new DriverFactory().getDriver();
@@ -27,13 +27,6 @@ public class MainPageTest {
     page.openPage(MAIN_PAGE);
     page.checkLoadPage();
   }
-
-  @BeforeAll
-  public void closeCookie() {
-    preface();
-    page.clickOnButton("ОК");/* Убираем плашку с куками */
-  }
-
 
   @AfterAll
   public void tearDown() {
@@ -54,7 +47,7 @@ public class MainPageTest {
     assertEquals(actualUrl, currentUrl);
   }
 
-  @ParameterizedTest(name = "{index} - Выбор курса в категории Популярные курсы где курс самый '{0}'")
+  @ParameterizedTest(name = "{index} - Выбор курса в категории Популярные курсы где курс самый {0}")
   @ValueSource(strings = {"ранний", "поздний"})
   public void clickPopularCourseByQueueDate(String queue) {
     WebElement element = page.getCourseByQueue("Популярные курсы", queue);

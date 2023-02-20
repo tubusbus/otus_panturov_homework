@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PageActions {
 
-  WebDriver driver;
+ private WebDriver driver;
 
   public PageActions(WebDriver driver) {
     this.driver = driver;
