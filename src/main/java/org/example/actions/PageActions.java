@@ -7,9 +7,9 @@ import org.openqa.selenium.WebElement;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PageActions {
+public abstract class PageActions {
 
- private WebDriver driver;
+  private WebDriver driver;
 
   public PageActions(WebDriver driver) {
     this.driver = driver;

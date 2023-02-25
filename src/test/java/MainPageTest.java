@@ -48,13 +48,13 @@ public class MainPageTest {
   }
 
   @ParameterizedTest(name = "{index} - Выбор курса в категории Популярные курсы где курс самый {0}")
-  @ValueSource(strings = {"ранний", "поздний"})
+  @ValueSource(strings = {"Первый", "Последний"})
   public void clickPopularCourseByQueueDate(String queue) {
     WebElement element = page.getCourseByQueue("Популярные курсы", queue);
     page.clickMouseOnElement(element);
     boolean checkUrl = false;
     String baseUrl = LESSONS_PAGE.getValue();
-    String[] actualUrls = {"/bi-analytics-course/", "/system_analyst/", "/teamlead2-0/"};
+    String[] actualUrls = {"/bi-analytics-course/", "/system_analyst/", "/linux-professional/"};
     String currentUrl = driver.getCurrentUrl();
     for (String url : actualUrls) {
       checkUrl = currentUrl.equals(baseUrl + url);
@@ -66,8 +66,8 @@ public class MainPageTest {
 
   @ParameterizedTest(name = "{index} - Выбор курса в категории {0} где курс самый {1}")
   @CsvSource({
-          "Все,поздний",
-          "Специализации,поздний"
+          "Все,Последний",
+          "Специализации,Последний"
   })
   public void clickCourseByQueueDate(String courseName, String queue) {
     WebElement element = page.getCourseByQueue(courseName, queue);
@@ -82,7 +82,7 @@ public class MainPageTest {
   @Test
   public void clickRecomindatedCourseByQueueDate() {
     try {
-      page.getCourseByQueue("Рекомендации для вас", "поздний");
+      page.getCourseByQueue("Рекомендации для вас", "Последний");
     } catch (RuntimeException e) {
       assertEquals("Элементы в разделе отсутствуют", e.getMessage());
     }

@@ -1,18 +1,18 @@
 package org.example.enums;
 
 public enum Months {
-  JAN("январ(?:ь|е|я)", "01"),
-  FEB("феврал(?:ь|е|я)", "02"),
-  MAR("март(?:е|а)", "03"),
-  APR("апрел(?:ь|е|я)", "04"),
-  MAY("ма(?:й|е|я)", "05"),
-  JUN("июн(?:ь|е|я)", "06"),
-  JUL("июл(?:ь|е|я)", "07"),
-  AUG("август(?:е|а)", "08"),
-  SEP("сентябр(?:ь|е|я)", "09"),
-  OCT("октябр(?:ь|е|я)", "10"),
-  NOV("ноябр(?:ь|е|я)", "11"),
-  DEC("декабр(?:ь|е|я)", "12");
+  JAN("январ", "01"),
+  FEB("феврал", "02"),
+  MAR("март", "03"),
+  APR("апрел", "04"),
+  MAY("ма", "05"),
+  JUN("июн", "06"),
+  JUL("июл", "07"),
+  AUG("август", "08"),
+  SEP("сентябр", "09"),
+  OCT("октябр", "10"),
+  NOV("ноябр", "11"),
+  DEC("декабр", "12");
 
   private final String monthName;
   private final String monthNumber;
@@ -20,6 +20,14 @@ public enum Months {
   Months(String monthName, String monthNumber) {
     this.monthName = monthName;
     this.monthNumber = monthNumber;
+  }
+
+  public String getMonthNumber() {
+    return this.monthNumber;
+  }
+
+  public String getMonthName() {
+    return this.monthName;
   }
 
   public static String getMonthNumber(String expectedMounth) throws Exception {
