@@ -47,22 +47,13 @@ public class MainPage extends PageActions {
   }
 
   private WebElement checkRepeatedDates(Set<WebElement> courses, Queues queue) {
-    return queue.equals(LAST) ? checkMaxRepeatedDates(courses) : checkMinRepeatedDates(courses);
-  }
-
-  private WebElement checkMaxRepeatedDates(Set<WebElement> courses) {
     return courses
             .stream()
-            .reduce((maxDate, curDate) -> getDateFromElement(maxDate).isAfter(getDateFromElement(curDate)) ? maxDate : curDate)
-            .stream()
-            .findFirst()
-            .get();
-  }
-
-  private WebElement checkMinRepeatedDates(Set<WebElement> courses) {
-    return courses
-            .stream()
-            .reduce((maxDate, curDate) -> getDateFromElement(maxDate).isBefore(getDateFromElement(curDate)) ? maxDate : curDate)
+            .reduce((maxDate, curDate) ->
+                    (queue.equals(LAST) ?
+                            getDateFromElement(maxDate).isAfter(getDateFromElement(curDate)) :
+                            getDateFromElement(maxDate).isBefore(getDateFromElement(curDate)))
+                            ? maxDate : curDate)
             .stream()
             .findFirst()
             .get();
