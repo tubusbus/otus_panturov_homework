@@ -22,12 +22,12 @@ public enum Months {
     this.monthNumber = monthNumber;
   }
 
-  public String getMonthNumber() {
-    return this.monthNumber;
-  }
-
   public String getMonthName() {
     return this.monthName;
+  }
+
+  public String getMonthNumber() {
+    return this.monthNumber;
   }
 
   public static String getMonthNumber(String expectedMounth) throws Exception {

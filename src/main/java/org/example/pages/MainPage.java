@@ -50,10 +50,8 @@ public class MainPage extends PageActions {
     return courses
             .stream()
             .reduce((maxDate, curDate) ->
-                    (queue.equals(LAST) ?
-                            getDateFromElement(maxDate).isAfter(getDateFromElement(curDate)) :
-                            getDateFromElement(maxDate).isBefore(getDateFromElement(curDate)))
-                            ? maxDate : curDate)
+                    (queue.equals(LAST) ? getDateFromElement(maxDate).isAfter(getDateFromElement(curDate)):
+                            getDateFromElement(maxDate).isBefore(getDateFromElement(curDate))) ? maxDate:curDate)
             .stream()
             .findFirst()
             .get();
@@ -129,7 +127,7 @@ public class MainPage extends PageActions {
   private Set<WebElement> findElements(String xpath) {
     Set<WebElement> elements = driver.findElements(By.xpath(xpath)).stream()
             .collect(Collectors.toSet());
-    if (elements.size() == 0) {
+    if (elements.size()==0) {
       throw new RuntimeException("Элементы в разделе отсутствуют");
     }
     return elements;
