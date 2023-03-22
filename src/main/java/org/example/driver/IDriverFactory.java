@@ -4,6 +4,6 @@ import org.openqa.selenium.WebDriver;
 
 public interface IDriverFactory {
 
-  WebDriver getDriver() throws Exception;
+  WebDriver getDriver(String browserType) throws Exception;
 
 }

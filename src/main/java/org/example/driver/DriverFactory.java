@@ -10,12 +10,9 @@ import java.util.Locale;
 
 public class DriverFactory implements IDriverFactory {
 
-
-  private String browserType = System.getProperty("browser").toLowerCase(Locale.ROOT);
-
   @Override
-  public EventFiringWebDriver getDriver() {
-    switch (this.browserType) {
+  public EventFiringWebDriver getDriver(String browserType) {
+    switch (browserType) {
       case "chrome": {
         WebDriver driver = new ChromeWebDriver().newDriver();
         driver.manage().window().maximize();
@@ -33,7 +30,7 @@ public class DriverFactory implements IDriverFactory {
       }
       default:
         try {
-          throw new Exception(this.browserType);
+          throw new Exception(browserType);
         } catch (Exception e) {
           e.printStackTrace();
           return null;

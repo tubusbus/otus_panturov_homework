@@ -1,25 +1,26 @@
 package org.example.pages;
 
+import com.google.inject.Inject;
 import org.example.actions.PageActions;
+import org.example.componentClasses.Course;
 import org.example.enums.CourseGroups;
 import org.example.enums.Months;
 import org.example.enums.Queues;
+import org.example.utils.GuiceScoped;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static org.example.enums.CourseGroups.ALL;
 import static org.example.enums.Queues.LAST;
 
 public class MainPage extends PageActions {
 
-  public WebDriver driver;
+  Set<Course> courses;
 
   private String popCourses = "//div[@class='container container-lessons']//a[contains(@class,'new-item')]/div/div[contains(@class ,'new-item__tags')]/parent::div";
   private String specCourses = "//div[@class='container container-lessons']//a[contains(@class,'new-item')]/div/div[contains(@class ,'bottom_spec')]/parent::div";
@@ -28,9 +29,9 @@ public class MainPage extends PageActions {
   private String coursesNames = "./div[contains(@class,'lessons__new-item-title')]";
   private String coursesDates = ".//div[@class='lessons__new-item-start'] | ./div[contains(@class,'lessons__new-item-bottom_spec')]/div[@class='lessons__new-item-time']";
 
-  public MainPage(WebDriver driver) {
-    super(driver);
-    this.driver = driver;
+  @Inject
+  public MainPage(GuiceScoped guiceScoped) {
+    super(guiceScoped);
   }
 
   public WebElement getCourseByQueue(String coursesName, String queue) {
@@ -42,50 +43,47 @@ public class MainPage extends PageActions {
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
-    Set<WebElement> courses = getCoursesSet(group);
     return checkRepeatedDates(courses, queues);
   }
 
-  private WebElement checkRepeatedDates(Set<WebElement> courses, Queues queue) {
-    return queue.equals(LAST) ? checkMaxRepeatedDates(courses) : checkMinRepeatedDates(courses);
-  }
-
-  private WebElement checkMaxRepeatedDates(Set<WebElement> courses) {
-    return courses
-            .stream()
-            .reduce((maxDate, curDate) -> getDateFromElement(maxDate).isAfter(getDateFromElement(curDate)) ? maxDate : curDate)
-            .stream()
-            .findFirst()
-            .get();
-  }
-
-  private WebElement checkMinRepeatedDates(Set<WebElement> courses) {
-    return courses
-            .stream()
-            .reduce((maxDate, curDate) -> getDateFromElement(maxDate).isBefore(getDateFromElement(curDate)) ? maxDate : curDate)
-            .stream()
-            .findFirst()
-            .get();
-  }
-
-  private LocalDate getDateFromElement(WebElement course) {
-    String date = course.findElement(By.xpath(coursesDates)).getText();
-    return dateFormatter(date);
-  }
-
   public WebElement getCourseForName(String courseName) {
-    Set<WebElement> courses = getCoursesSet(ALL);
-    return getCourseByName(courses, courseName);
+    getCourses(ALL);
+    WebElement element = courses.stream()
+            .filter(e -> e.getName().equals(courseName))
+            .findFirst()
+            .get()
+            .getWebElement();
+    return element;
   }
 
-  private WebElement getCourseByName(Set<WebElement> courses, String courseName) {
-    for (WebElement c : courses) {
-      String actualCourse = c.findElement(By.xpath(coursesNames)).getText().trim();
-      if (courseName.equals(actualCourse)) {
-        return c.findElement(By.xpath(String.format(".//div[contains(text(), '%s')]", courseName)));
-      }
-    }
-    throw new RuntimeException(String.format("Не найден курс с именем %s", courseName));
+  public void printCourseWithDate(LocalDate courseDate) {
+    getCourses(ALL);
+    Course course = courses.stream()
+            .filter(e -> e.getDate() != null && e.getDate().equals(courseDate))
+            .findFirst()
+            .get();
+    System.out.println(course);
+  }
+
+  public void printCourseLatestDate(LocalDate courseDate) {
+    getCourses(ALL);
+    courses.forEach(e -> {
+      if (e.getDate() != null && (e.getDate().equals(courseDate) || e.getDate().isAfter(courseDate)))
+        System.out.println(e);
+    });
+  }
+
+  private WebElement checkRepeatedDates(Set<Course> courses, Queues queue) {
+    return courses
+            .stream()
+            .reduce((targetCourse, currentCourse) ->
+                    (queue.equals(LAST) ? targetCourse.getDate().isAfter(currentCourse.getDate()) :
+                            targetCourse.getDate().isBefore(currentCourse.getDate()))
+                            ? targetCourse : currentCourse)
+            .stream()
+            .findFirst()
+            .get()
+            .getWebElement();
   }
 
   private LocalDate dateFormatter(String string) {
@@ -93,9 +91,12 @@ public class MainPage extends PageActions {
     String dateString = getMonthNumberByName(string);
     if (dateString.matches("В.+\\d{4} года.+")) {
       dateString = now.getDayOfMonth() + getDateString(dateString, "\\d{6}");
+    } else if (dateString.matches(".* \\d{1} .*")) {
+      dateString = "0" + getDateString(dateString, "(\\d{3})") + now.getYear();
     } else if (dateString.matches(".*\\d{2}.*")) {
       dateString = getDateString(dateString, "(\\d{4})") + now.getYear();
-    }
+    } else
+      return null;
     return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("ddMMyyyy"));
   }
 
@@ -120,28 +121,36 @@ public class MainPage extends PageActions {
             .get();
   }
 
-  private Set<WebElement> getCoursesSet(CourseGroups coursesName) {
+  private void getCourses(CourseGroups coursesName) {
     switch (coursesName) {
       case POPULAR:
-        return findElements(popCourses);
+        findElements(popCourses);
+        break;
       case SPECIALISACION:
-        return findElements(specCourses);
+        findElements(specCourses);
+        break;
       case RECOMENDATION:
-        return findElements(recomendationCourses);
+        findElements(recomendationCourses);
+        break;
       case ALL:
-        return findElements(allCourses);
+        findElements(allCourses);
+        break;
       default:
         throw new RuntimeException("Несоответствующий раздел курсов");
     }
   }
 
-  private Set<WebElement> findElements(String xpath) {
-    Set<WebElement> elements = driver.findElements(By.xpath(xpath)).stream()
-            .collect(Collectors.toSet());
-    if (elements.size() == 0) {
+  private void findElements(String xpath) {
+    courses = new HashSet<>();
+    guiceScoped.driver.findElements(By.xpath(xpath)).forEach(e -> {
+      String name = e.findElement(By.xpath(coursesNames)).getText().trim();
+      LocalDate date = dateFormatter(e.findElement(By.xpath(coursesDates)).getText());
+      courses.add(new Course(e, name, date));
+    });
+
+    if (courses.size() == 0) {
       throw new RuntimeException("Элементы в разделе отсутствуют");
     }
-    return elements;
   }
 
 }
