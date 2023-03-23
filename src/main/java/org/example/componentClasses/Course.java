@@ -6,15 +6,15 @@ import java.time.LocalDate;
 
 public class Course {
 
-  public WebElement webElement;
+  private WebElement webElement;
 
-  public String name;
+  private String name;
 
-  public LocalDate date;
+  private LocalDate date;
 
-  public String price;
+  private Integer price;
 
-  public Course(WebElement webElement, String name, LocalDate date, String price) {
+  public Course(WebElement webElement, String name, LocalDate date, Integer price) {
     this.webElement = webElement;
     this.name = name;
     this.date = date;
@@ -39,7 +39,7 @@ public class Course {
     return date;
   }
 
-  public String getPrice() {
+  public Integer getPrice() {
     return price;
   }
 
@@ -55,13 +55,13 @@ public class Course {
     this.date = date;
   }
 
-  public void setPrice(String price) {
+  public void setPrice(Integer price) {
     this.price = price;
   }
 
   @Override
   public String toString() {
-    return String.format("Название курса = '%s'\nДата старта курса = '%s'\n", name, date);
+    return String.format("Название = '%s'\nCтарт курса = '%s'\nЦена = '%s'\n", name, date, price);
   }
 
 }
