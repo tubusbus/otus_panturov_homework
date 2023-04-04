@@ -49,7 +49,7 @@ public class MainPage extends PageActions {
     LocalDate now = LocalDate.now();
     String dateString = getMonthNumberByName(string);
     if (dateString.matches("В.+\\d{4} года.+")) {
-      dateString = now.getDayOfMonth() + getDateString(dateString, "\\d{6}");
+      dateString = "01" + getDateString(dateString, "\\d{6}");
     } else if (dateString.matches(".* \\d{1} .*")) {
       dateString = "0" + getDateString(dateString, "(\\d{3})") + now.getYear();
     } else if (dateString.matches(".*\\d{2}.*")) {
