@@ -28,10 +28,10 @@ public class MainPageTest {
     page.checkLoadPage();
   }
 
-  @AfterAll
-  public void tearDown() {
-    page.driverQuit();
-  }
+//  @AfterAll
+//  public void tearDown() {
+//    page.driverQuit();
+//  }
 
   @ParameterizedTest(name = "{index} - Выбор курса названием {0}")
   @CsvSource({

@@ -1,5 +1,6 @@
 package org.example.pages;
 
+import io.qameta.allure.Step;
 import org.example.actions.PageActions;
 import org.example.enums.CourseGroups;
 import org.example.enums.Months;
@@ -33,6 +34,7 @@ public class MainPage extends PageActions {
     this.driver = driver;
   }
 
+  @Step ("В кадекогории {coursesName} нахожу {queue} курс")
   public WebElement getCourseByQueue(String coursesName, String queue) {
     Queues queues;
     CourseGroups group;
@@ -73,6 +75,7 @@ public class MainPage extends PageActions {
     return dateFormatter(date);
   }
 
+  @Step ("Нахожу курс с названием {courseName}")
   public WebElement getCourseForName(String courseName) {
     Set<WebElement> courses = getCoursesSet(ALL);
     return getCourseByName(courses, courseName);

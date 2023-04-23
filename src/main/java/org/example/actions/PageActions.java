@@ -1,5 +1,6 @@
 package org.example.actions;
 
+import io.qameta.allure.Step;
 import org.example.enums.PagesEnum;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -19,7 +20,7 @@ public abstract class PageActions {
     driver.findElement(By.xpath("//img[@class='header3__logo-img']")).isEnabled();
   }
 
-
+@Step("Нажимаю на элемент")
   public void clickMouseOnElement(WebElement element) {
     MouseActions actions = new MouseActions(driver);
     assertTrue(element.isDisplayed());
