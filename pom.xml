@@ -21,8 +21,8 @@
     <useUnlimitedThreads>true</useUnlimitedThreads>
     <thread.count>32</thread.count>
 
-    <browser>chrome</browser>
-    <browser.version>111.0</browser.version>
+    <BROWSES>chrome</BROWSES>
+    <BROVSER_VERSION>111.0</BROVSER_VERSION>
     <webdriver.base.url>https://otus.ru</webdriver.base.url>
     <test.project.language>RU</test.project.language>
 
@@ -134,8 +134,8 @@
           </systemProperties>
 
           <systemPropertyVariables>
-            <browser>${browser}</browser>
-            <browser.version>${browser.version}</browser.version>
+            <BROWSES>${BROWSES}</BROWSES>
+            <BROVSER_VERSION>${BROVSER_VERSION}</BROVSER_VERSION>
             <webdriver.timeouts.implicitlywait>${webdriver.timeouts.implicitlywait}
             </webdriver.timeouts.implicitlywait>
             <webdriver.base.url>${webdriver.base.url}</webdriver.base.url>
