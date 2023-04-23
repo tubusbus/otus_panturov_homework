@@ -20,7 +20,7 @@ public abstract class PageActions {
     driver.findElement(By.xpath("//img[@class='header3__logo-img']")).isEnabled();
   }
 
-@Step("Нажимаю на элемент")
+  @Step("Нажимаю на элемент")
   public void clickMouseOnElement(WebElement element) {
     MouseActions actions = new MouseActions(driver);
     assertTrue(element.isDisplayed());

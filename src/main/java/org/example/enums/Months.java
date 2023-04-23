@@ -22,14 +22,6 @@ public enum Months {
     this.monthNumber = monthNumber;
   }
 
-  public String getMonthNumber() {
-    return this.monthNumber;
-  }
-
-  public String getMonthName() {
-    return this.monthName;
-  }
-
   public static String getMonthNumber(String expectedMounth) throws Exception {
     for (Months mounth : values()) {
       if (expectedMounth.matches(mounth.monthName)) {
@@ -37,5 +29,13 @@ public enum Months {
       }
     }
     throw new Exception(String.format("месяц %s не определён", expectedMounth));
+  }
+
+  public String getMonthNumber() {
+    return this.monthNumber;
+  }
+
+  public String getMonthName() {
+    return this.monthName;
   }
 }
