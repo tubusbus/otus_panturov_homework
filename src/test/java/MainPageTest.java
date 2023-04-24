@@ -47,6 +47,7 @@ public class MainPageTest {
     } catch (MalformedURLException e) {
       throw new RuntimeException(e);
     }
+    driver.manage().window().maximize();
     this.page = new MainPage(driver);
 
     page.openPage(MAIN_PAGE);
