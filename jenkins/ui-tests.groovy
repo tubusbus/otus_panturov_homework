@@ -9,6 +9,7 @@ timeout(60) {
             def browserVersion = env.BROWSER_VERSION
             def baseUrl = env.BASE_URL
             def gridUrl = env.RID_URL
+            def token = env.TOKEN
             int exitCode = sh(
                     returnStatus: true,
                     script: """
