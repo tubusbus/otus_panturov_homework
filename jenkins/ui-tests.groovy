@@ -5,10 +5,10 @@ timeout(60) {
             checkout scm
         }
         stage("Run ui-tests") {
-            String browser = binding.variables["BROWSER"]
-            String browserVersion = binding.variables["BROWSER_VERSION"]
-            String baseUrl = binding.variables["BASE_URL"]
-            String gridUrl = binding.variables["GRID_URL"]
+            def browser = env.BROWSER
+            def browserVersion = env.BROWSER_VERSION
+            def baseUrl = env.BASE_URL
+            def gridUrl = env.RID_URL
             int exitCode = sh(
                     returnStatus: true,
                     script: """
