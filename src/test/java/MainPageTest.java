@@ -28,28 +28,21 @@ public class MainPageTest {
 
   @BeforeEach
   public void preface() {
-    String browser = System.getProperty("BROWSER");
-    String browserVersion = System.getProperty("BROWSER_VERSION");
-    String baseUrl = System.getProperty("BASE_URL");
-    String gridUrl = System.getProperty("GRID_URL");
-
-    System.out.println("ВЫВОД ПЕРЕМЕННЫХ");
-    System.out.println(browser);
-    System.out.println(browserVersion);
-    System.out.println(baseUrl);
-    System.out.println(gridUrl);
+    String browser = System.getProperty("browser");
+    String browserVersion = System.getProperty("browserVersion");
+    String seleniumUrl = String.format("http://%s/wd/hub",System.getProperty("gridUrl"));
 
     Map<String, Object> selenoidOptions = new HashMap<>();
     selenoidOptions.put("enableVNC", true);
     DesiredCapabilities capabilities = new DesiredCapabilities();
-    capabilities.setCapability("browserName", "chrome");
-    capabilities.setCapability("browserVersion", "107.0");
+    capabilities.setCapability("browserName", browser);
+    capabilities.setCapability("browserVersion", browserVersion);
     capabilities.setCapability("enableVideo", false);
     capabilities.setCapability("selenoid:options", selenoidOptions);
     driver = null;
     try {
       driver = new RemoteWebDriver(
-              URI.create("http://127.0.0.1:4444/wd/hub").toURL(), capabilities
+              URI.create(seleniumUrl).toURL(), capabilities
       );
     } catch (MalformedURLException e) {
       throw new RuntimeException(e);
@@ -67,8 +60,8 @@ public class MainPageTest {
 
   @ParameterizedTest(name = "{index} - Выбор курса названием {0}")
   @CsvSource({
-//          "BI-аналитика,/bi-analytics-course/",
-          "Специализация iOS Developer,/ios-specialization/"
+          "Apache Kafka,/kafka/",
+          "Специализация Python,/python-specialization/"
   })
   public void clickCourseByName(String courseName, String expectedUrl) {
     WebElement element = page.getCourseForName(courseName);
@@ -79,45 +72,45 @@ public class MainPageTest {
     assertEquals(actualUrl, currentUrl);
   }
 
-//  @ParameterizedTest(name = "{index} - Выбор курса в категории Популярные курсы где курс самый {0}")
-//  @ValueSource(strings = {"Первый", "Последний"})
-//  public void clickPopularCourseByQueueDate(String queue) {
-//    WebElement element = page.getCourseByQueue("Популярные курсы", queue);
-//    page.clickMouseOnElement(element);
-//    boolean checkUrl = false;
-//    String baseUrl = LESSONS_PAGE.getValue();
-//    String[] actualUrls = {"/bi-analytics-course/", "/system_analyst/", "/linux-professional/"};
-//    String currentUrl = driver.getCurrentUrl();
-//    for (String url : actualUrls) {
-//      checkUrl = currentUrl.equals(baseUrl + url);
-//      if (checkUrl)
-//        break;
-//    }
-//    assertTrue(checkUrl);
-//  }
-//
-//  @ParameterizedTest(name = "{index} - Выбор курса в категории {0} где курс самый {1}")
-//  @CsvSource({
-//          "Все,Последний",
-//          "Специализации,Последний"
-//  })
-//  public void clickCourseByQueueDate(String courseName, String queue) {
-//    WebElement element = page.getCourseByQueue(courseName, queue);
-//    page.clickMouseOnElement(element);
-//    String baseUrl = LESSONS_PAGE.getValue();
-//    String actualUrl = baseUrl + "/php-specialization/";
-//    String currentUrl = driver.getCurrentUrl();
-//    assertEquals(actualUrl, currentUrl);
-//  }
-//
-//  @DisplayName("Проверка на отсутствие курсов в разделе Рекомендации для вас")
-//  @Test
-//  public void clickRecomindatedCourseByQueueDate() {
-//    try {
-//      page.getCourseByQueue("Рекомендации для вас", "Последний");
-//    } catch (RuntimeException e) {
-//      assertEquals("Элементы в разделе отсутствуют", e.getMessage());
-//    }
-//  }
+  @ParameterizedTest(name = "{index} - Выбор курса в категории Популярные курсы где курс самый {0}")
+  @ValueSource(strings = {"Первый", "Последний"})
+  public void clickPopularCourseByQueueDate(String queue) {
+    WebElement element = page.getCourseByQueue("Популярные курсы", queue);
+    page.clickMouseOnElement(element);
+    boolean checkUrl = false;
+    String baseUrl = LESSONS_PAGE.getValue();
+    String[] actualUrls = {"/system_analyst/", "/kafka/"};
+    String currentUrl = driver.getCurrentUrl();
+    for (String url : actualUrls) {
+      checkUrl = currentUrl.equals(baseUrl + url);
+      if (checkUrl)
+        break;
+    }
+    assertTrue(checkUrl);
+  }
+
+  @ParameterizedTest(name = "{index} - Выбор курса в категории {0} где курс самый {1}")
+  @CsvSource({
+          "Все,Последний",
+          "Специализации,Последний"
+  })
+  public void clickCourseByQueueDate(String courseName, String queue) {
+    WebElement element = page.getCourseByQueue(courseName, queue);
+    page.clickMouseOnElement(element);
+    String baseUrl = LESSONS_PAGE.getValue();
+    String actualUrl = baseUrl + "/spec-android/";
+    String currentUrl = driver.getCurrentUrl();
+    assertEquals(actualUrl, currentUrl);
+  }
+
+  @DisplayName("Проверка на отсутствие курсов в разделе Рекомендации для вас")
+  @Test
+  public void clickRecomindatedCourseByQueueDate() {
+    try {
+      page.getCourseByQueue("Рекомендации для вас", "Последний");
+    } catch (RuntimeException e) {
+      assertEquals("Элементы в разделе отсутствуют", e.getMessage());
+    }
+  }
 
 }
