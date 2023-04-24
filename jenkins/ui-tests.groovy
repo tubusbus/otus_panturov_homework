@@ -5,10 +5,14 @@ timeout(60) {
             checkout scm
         }
         stage("Run ui-tests") {
+            String browser = binding.variables["BROWSER"]
+            String browserVersion = binding.variables["BROWSER_VERSION"]
+            String baseUrl = binding.variables["BASE_URL"]
+            String gridUrl = binding.variables["GRID_URL"]
             int exitCode = sh(
                     returnStatus: true,
                     script: """
-                    mvn clean test -Dbrowser=$BROWSER -Dbrowser.version=$BROWSER_VERSION -Dwebdriver.base.url=$BASE_URL -Dwebdriver.remote.url=$GRID_URL
+                    mvn clean test -Dbrowser=${browser} -Dbrowser.version=${browserVersion} -Dwebdriver.base.url=${baseUrl} -Dwebdriver.remote.url=${gridUrl}
                     """
             )
             if(exitCode == 1) {
