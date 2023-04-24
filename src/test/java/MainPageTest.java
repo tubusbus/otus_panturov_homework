@@ -32,6 +32,10 @@ public class MainPageTest {
     String browserVersion = System.getProperty("browserVersion");
     String seleniumUrl = String.format("http://%s/wd/hub",System.getProperty("gridUrl"));
 
+    System.out.println(browser);
+    System.out.println(browserVersion);
+    System.out.println(seleniumUrl);
+
     Map<String, Object> selenoidOptions = new HashMap<>();
     selenoidOptions.put("enableVNC", true);
     DesiredCapabilities capabilities = new DesiredCapabilities();
