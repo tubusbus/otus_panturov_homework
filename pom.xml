@@ -22,8 +22,9 @@
     <thread.count>32</thread.count>
 
     <browser>chrome</browser>
-    <browser.version>111.0</browser.version>
+    <browser.version>107.0</browser.version>
     <webdriver.base.url>https://otus.ru</webdriver.base.url>
+    <webdriver.remote.url>http://127.0.0.1:4444</webdriver.remote.url>
     <test.project.language>RU</test.project.language>
 
     <webdriver.timeouts.implicitlywait>5000</webdriver.timeouts.implicitlywait>
@@ -124,6 +125,22 @@
 
           <systemProperties>
             <property>
+              <name>browser</name>
+              <value>${browser}</value>
+            </property>
+            <property>
+              <name>browser.version</name>
+              <value>${browser.version}</value>
+            </property>
+            <property>
+              <name>webdriver.base.url</name>
+              <value>${webdriver.base.url}</value>
+            </property>
+            <property>
+              <name>webdriver.remote.url</name>
+              <value>${webdriver.remote.url}</value>
+            </property>
+            <property>
               <name>allure.results.directory</name>
               <value>${project.basedir}/allure-results</value>
             </property>
@@ -136,6 +153,7 @@
           <systemPropertyVariables>
             <browser>${browser}</browser>
             <browser.version>${browser.version}</browser.version>
+            <webdriver.remote.url>${webdriver.remote.url}</webdriver.remote.url>
             <webdriver.timeouts.implicitlywait>${webdriver.timeouts.implicitlywait}
             </webdriver.timeouts.implicitlywait>
             <webdriver.base.url>${webdriver.base.url}</webdriver.base.url>

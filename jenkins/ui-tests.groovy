@@ -8,7 +8,7 @@ timeout(60) {
             def browser = env.BROWSER
             def browserVersion = env.BROWSER_VERSION
             def baseUrl = env.BASE_URL
-            def gridUrl = env.RID_URL
+            def gridUrl = env.GRID_URL
             def token = env.TOKEN
             int exitCode = sh(
                     returnStatus: true,
@@ -37,7 +37,7 @@ timeout(60) {
             ])
         }
         stage('Notify to telegram') {
-            telegramEntity = "https://api.telegram.org/bot${TOKEN}/"
+            telegramEntity = "https://api.telegram.org/bot${token}/"
 
             wuthCredentials([userAndPassword(credentialId: "BOT_TOKEN", environment: "TOKEN")]) {
 

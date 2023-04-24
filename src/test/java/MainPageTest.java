@@ -29,12 +29,8 @@ public class MainPageTest {
   @BeforeEach
   public void preface() {
     String browser = System.getProperty("browser");
-    String browserVersion = System.getProperty("browserVersion");
-    String seleniumUrl = String.format("http://%s/wd/hub",System.getProperty("gridUrl"));
-
-    System.out.println(browser);
-    System.out.println(browserVersion);
-    System.out.println(seleniumUrl);
+    String browserVersion = System.getProperty("browser.version");
+    String seleniumUrl = String.format("%s/wd/hub",System.getProperty("webdriver.remote.url"));
 
     Map<String, Object> selenoidOptions = new HashMap<>();
     selenoidOptions.put("enableVNC", true);
