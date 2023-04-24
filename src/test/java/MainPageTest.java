@@ -1,7 +1,9 @@
 import com.codeborne.selenide.conditions.webdriver.Url;
-import org.example.driver.DriverFactory;
+import org.example.annotations.Driver;
+import org.example.extensions.UiExtensions;
 import org.example.pages.MainPage;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -21,37 +23,17 @@ import static org.example.enums.PagesEnum.MAIN_PAGE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(UiExtensions.class)
 public class MainPageTest {
-  private MainPage page;
+
+  @Driver
   private WebDriver driver;
+  private MainPage page;
 
   @BeforeEach
   public void preface() {
-    String browser = System.getProperty("browser");
-    String browserVersion = System.getProperty("browser.version");
-    String seleniumUrl = String.format("%s/wd/hub",System.getProperty("webdriver.remote.url"));
-
-    Map<String, Object> selenoidOptions = new HashMap<>();
-    selenoidOptions.put("enableVNC", true);
-    DesiredCapabilities capabilities = new DesiredCapabilities();
-    capabilities.setCapability("browserName", browser);
-    capabilities.setCapability("browserVersion", browserVersion);
-    capabilities.setCapability("enableVideo", false);
-    capabilities.setCapability("selenoid:options", selenoidOptions);
-    driver = null;
-    try {
-      driver = new RemoteWebDriver(
-              URI.create(seleniumUrl).toURL(), capabilities
-      );
-    } catch (MalformedURLException e) {
-      throw new RuntimeException(e);
-    }
-    driver.manage().window().maximize();
-    this.page = new MainPage(driver);
-
+    page = new MainPage(driver);
     page.openPage(MAIN_PAGE);
-    page.checkLoadPage();
   }
 
   @ParameterizedTest(name = "{index} - Выбор курса названием {0}")

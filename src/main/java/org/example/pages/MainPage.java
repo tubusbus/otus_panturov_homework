@@ -2,6 +2,7 @@ package org.example.pages;
 
 import io.qameta.allure.Step;
 import org.example.actions.PageActions;
+import org.example.annotations.Driver;
 import org.example.enums.CourseGroups;
 import org.example.enums.Months;
 import org.example.enums.Queues;

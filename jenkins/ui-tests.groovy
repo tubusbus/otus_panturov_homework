@@ -36,25 +36,5 @@ timeout(60) {
                     results: [[path: 'allure-results']]
             ])
         }
-        stage('Notify to telegram') {
-            telegramEntity = "https://api.telegram.org/bot${token}/"
-
-            wuthCredentials([userAndPassword(credentialId: "BOT_TOKEN", environment: "TOKEN")]) {
-
-                String chatId = URLEncoder.encode("${myteam_chat_id}", "UTF-8")
-                String reportMessage = URLEncoder.encode("${env.MESSAGE}", "UTF-8")
-
-                StringBuilder stringBuilder = new StringBuilder("${telegramEntity}/sendMessage");
-                stringBuilder.append("?chatId=${chatId}")
-                stringBuilder.append("?text=${reportMessage}")
-
-                URL urlConnection = null
-                url = new URL(stringBuilder.toString()).openConnection() as HttpURLConnection
-                urlConnection.setRequestMethod('GET')
-                urlConnection.setDoOutput(true)
-                def is = urlConnection.getInputStream() as InputStream
-                echo is.getText('utf-8')
-            }
-        }
     }
 }
