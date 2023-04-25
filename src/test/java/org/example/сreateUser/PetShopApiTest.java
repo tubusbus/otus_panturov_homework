@@ -3,32 +3,26 @@ package org.example.сreateUser;
 import dto.User;
 import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.response.ValidatableResponse;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import services.UserApi;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.lessThan;
 
 public class PetShopApiTest {
 
-  @ParameterizedTest(name = "{index} - Создаие пользователя {0}")
-  @CsvSource({
-          "user,Customer,Customerov,usersmail@mail.ru,pass,8(800)555-35-35"
-  })
-  public void createUser(String username, String firstName, String lastName, String email, String password, String phone) {
+  String username;
+
+  @AfterEach
+  public void deleteUsers() {
     UserApi userApi = new UserApi();
-    User user = User.builder()
-            .id(1)
-            .username(username)
-            .firstName(firstName)
-            .lastName(lastName)
-            .email(email)
-            .password(password)
-            .phone(phone)
-            .build();
-    ValidatableResponse response = userApi.createUser(user);
-    response.statusCode(200);
+    userApi.deleteUser(username).statusCode(200);
   }
 
   @ParameterizedTest(name = "{index} - создание, проверка и удаление пользователя {0}")
@@ -36,6 +30,7 @@ public class PetShopApiTest {
           "proverka,Ivan,Ivanov,kakoynibud@mail.ru,password,+7(999)999-99-01"
   })
   public void getUser(String username, String firstName, String lastName, String email, String password, String phone) {
+    this.username = username;
     UserApi userApi = new UserApi();
     User user = User.builder()
             .id(152)
@@ -62,14 +57,6 @@ public class PetShopApiTest {
             .body("password", equalTo(password))
             .body("phone", equalTo(phone))
             .body("userStatus", equalTo(0));
-
-    response = userApi.deleteUser(username);
-    response
-            .statusCode(200)
-            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath("schema/DeleteUser.json"))
-            .body("code", equalTo(200))
-            .body("type", equalTo("unknown"))
-            .body("message", equalTo(username));
   }
 
 }

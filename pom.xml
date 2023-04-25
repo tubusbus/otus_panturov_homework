@@ -17,6 +17,7 @@
         <browser>chrome</browser>
         <browser.version>111.0</browser.version>
         <webDriver.base.url>https://otus.ru</webDriver.base.url>
+        <base.url>https://petstore.swagger.io/v2</base.url>
         <checkstyle.plugin.version>3.1.2</checkstyle.plugin.version>
         <spotbugs.versions>4.4.2</spotbugs.versions>
         <maven.compiler.source>11</maven.compiler.source>
@@ -79,6 +80,7 @@
                         <systemProperty>
                             <browser>${browser}</browser>
                             <webDriver.base.url>${webDriver.base.url}</webDriver.base.url>
+                            <base.url>${base.url}</base.url>
                             <browser.version>${browser.version}</browser.version>
                             <test.project.status>test</test.project.status>
                         </systemProperty>
