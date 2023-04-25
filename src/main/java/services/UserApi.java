@@ -5,21 +5,22 @@ import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 
-import static enums.UrlsEnum.*;
 import static io.restassured.RestAssured.given;
 
 public class UserApi {
   private RequestSpecification spec;
+ final String baseUrl = System.getProperty("base.url","https://petstore.swagger.io/v2");
+ final String userPath = "/user";
 
   public UserApi() {
     spec = given()
-            .baseUri(BASE_URL.getValue())
+            .baseUri(baseUrl)
             .contentType(ContentType.JSON);
   }
 
   public ValidatableResponse createUser(User user) {
     return given(spec)
-            .basePath(USER_PATH.getValue())
+            .basePath(userPath)
             .body(user)
             .log().all()
             .when()
@@ -31,7 +32,7 @@ public class UserApi {
 
   public ValidatableResponse getUser(String userName) {
     return given(spec)
-            .basePath(USER_PATH.getValue())
+            .basePath(userPath)
             .get(String.format("/%s", userName))
             .then()
             .log()
@@ -40,7 +41,7 @@ public class UserApi {
 
   public ValidatableResponse deleteUser(String userName) {
     return given(spec)
-            .basePath(USER_PATH.getValue())
+            .basePath(userPath)
             .delete(String.format("/%s", userName))
             .then()
             .log()
